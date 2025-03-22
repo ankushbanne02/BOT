@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        button { font-size: 18px; padding: 10px 20px; margin-top: 20px; }
+        p { font-size: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Speech to Text Converter</h1>
+    <button id="listen-btn">🎤 Listen</button>
+    <p id="output">Click the button and start speaking...</p>
+
+    <script>
+        const { ipcRenderer } = require("electron");
+
+        document.getElementById("listen-btn").addEventListener("click", () => {
+            document.getElementById("output").textContent = "Listening...";
+            ipcRenderer.send("start-listening");
+        });
+
+        ipcRenderer.on("speech-result", (event, text) => {
+            document.getElementById("output").textContent = "Recognized: " + text;
+        });
+    </script>
+</body>
+</html>
